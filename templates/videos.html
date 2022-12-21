@@ -1,0 +1,126 @@
+{% extends 'videoVisual.html' %}
+{% load static %}
+{% block preview %}
+    <link href="{% static 'styles/style.css' %}" type="text/css" rel="stylesheet">
+
+    <script type="text/javascript" src="{% static 'flowplayer/flowplayer-3.2.2.min.js' %}"></script>
+    <dev>
+        <div style="display: inline-flex">
+            <div class="blockNewFilm">
+                <div class="block-for-list-of-smg" style="display: inline-flex;background: linear-gradient(45deg, #e5983f, #ce765d);">
+                    <div class="fakeing" >
+                        <img class="img" style="border-radius: 15px; padding: 0.5vh" src="{% static videos.FrontImg %}">
+                    </div>
+                    <div clacc="Desc-for-view"style="color: #ffffff">
+                        <h3>Название: {{ videos.VideoName }}</h3>
+                        <h3>Дата выхода: {{ videos.releaseDate }}</h3>
+                        <h3>Режисер: {{ videos.VideoBy }}</h3>
+                        <h3>Страна: {{ videos.videoCountry }}</h3>
+                        <h3>Рейтинг:</h3>
+                        <div class="circles" style="color: {% if videoRatings > 3.5 %}green{% elif videoRatings <= 3.5 and videoRatings >= 2.5 %}orange{% elif videoRatings <= 2.5 %}red{% endif %}">
+                            <center>{{ videoRatings }} </center>
+                        </div>
+{#                                <progress value="{{ videoRatings }}" max="5" style="background-color:{% if videoRatings > 3 %}red{% elif videoRatings <= 3 %}green{% endif %}; width:60px; height:20px">#}
+{#                                </progress>#}
+                    </div>
+
+                </div>
+            </div>
+
+                <div class="block-for-list-of-smg" style="display: inline-flex; background: linear-gradient(45deg, #e5983f, #ce765d);">
+                    <div clacc="Desc-for-view"style="color: #ffffff">
+                            <center><h1>Описание</h1></center>
+                            <h3 style="margin: auto"> {{ videos.VideoDesc }}</h3>
+
+                    </div>
+                </div>
+        </div>
+        <div>
+            <div class="block-for-list-of-smg">
+                <div class="blockNewFilm">
+                <h2>Актеры</h2>
+
+                        {% for act in link %}
+                            <div class="class-pod-class">
+                                <div class="clasOut" >
+                                        <center>
+                                            <img class="img" src="{% static act.Actors.ActorPhoto %}">
+                                            <h3>{{ act.Actors.ActorFIO }}</h3>
+                                            <h3>Роль: {{ act.ActorRole }}</h3>
+                                        </center>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        <div>
+        <div class="block-for-list-of-smg">
+            <div class="blockNewFilm">
+                <h2>Связанные фильмы</h2>
+                    {%  for vid in video_class %}
+                        <div class="class-pod-class">
+                                        <div class="clasOut" style="background: linear-gradient(45deg, #f5cd4d, #af310c)">
+                                            <center>
+                                                <a href="{% url 'videos' vid.id %} " style="text-decoration: none; color: white">
+                                                    <img class="img" src="{% static vid.FrontImg %}">
+                                                    <h3>{{ vid.VideoName }}</h3>
+                                                </a>
+                                            </center>
+                                        </div>
+                                    </div>
+                    {%  endfor %}
+            </div>
+        </div>
+        </div>
+    </dev>
+
+{% endblock %}
+
+{% block content %}
+    <div class="clasOut">
+        <video class="video-block-display" src= "{% static videos.VideoURL %}" controls></video>
+        <div class="form-block-display">
+            <center>
+                <form method="post" action="{% url 'add_rating' %}" name="rating">
+                    {% csrf_token %}
+                    <span class="rating">
+                        <div class="rating-items">
+                            <input type="hidden" value="{{ videos.id }}" name="video">
+                            {% for i,v in star_form.fields.star.choices %}
+                                <input id="rating{{ v }}" class="rating-item" type="radio" name="star" value="{{ v }}">
+                                <label for="rating{{ v }}" class="rating-label"></label>
+                            {% endfor %}
+                        </div>
+                    </span>
+                    <button type="submit">Оценить!</button>
+                </form>
+            </center>
+        </div>
+    </div>
+
+{% endblock %}
+{% block comments %}
+    {% for com in content %}
+        <div class="class-comments">
+            <div class="comments-for-video">
+
+                    <h3>{{ com.user }}</h3>
+                    <h3>{{ com.content }}</h3>
+                    <h3>{{ com.com_date }}</h3>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+{% block makecomment %}
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <div><label for="id_content">Коментарий:</label></div>
+            <textarea name="content" cols="40" rows="10" maxlength="300" required="" id="id_content"></textarea>
+        </div>
+        <button class ="button-classic-class" type="submit">Добавить</button>
+    </form>
+{% endblock %}

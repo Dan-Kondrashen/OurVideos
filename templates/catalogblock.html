@@ -1,0 +1,49 @@
+{% extends 'Catalog.html' %}
+{% load static %}
+<script src="https://kit.fontawesome.com/b4e6ab3322.js" crossorigin="anonymous"></script>
+<link href="{% static 'styles/style.css' %}" type="text/css" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+        {% block contentsearch %}
+                <form action="{% url 'search' %}" class="search-form" method="post">
+                    {% csrf_token %}
+                    <input name="searchText" type="text" class="search-input" placeholder="Поиск...">
+                    <button type="button" class="search-button"></button>
+                </form >
+        {% endblock %}
+
+
+
+
+        {% block content1 %}
+        <div class="main" style="color: white;background: linear-gradient(45deg, #e5983f, #ce765d);border-radius: 20px;">
+
+                <form action="{% url 'Каталог' %}" method="GET">
+                    {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                    <div class="container button">
+                        <input type="submit", value="Отправить">
+                    </div>
+                </form>
+
+        </div>
+
+{% endblock %}
+{% block content %}
+    {% for vi in vid%}
+        <center>
+
+                <a href="{% url 'videos' vi.id %} " style="text-decoration: none; color: white">
+
+                        <div class="clasOut"style="width: 19vw; height: auto;">
+                            <img  style=" width: 17vw; height: 24vw; border-radius: 15px" src="{% static vi.FrontImg %}">
+                            <p>{{ vi.VideoName }}</p>
+                        </div>
+
+                </a>
+
+        </center>
+
+    {% endfor %}
+
+{% endblock %}

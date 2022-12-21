@@ -1,0 +1,56 @@
+{% extends 'homePage.html' %}
+{% load static %}
+<link href="{% static 'styles/style.css' %}" type="text/css" rel="stylesheet">
+{% block content %}
+    {% for videoInf in videoInfo %}
+        <center>
+            <a href="{% url 'videos' videoInf.id %} " style="text-decoration: none; color: white">
+
+                    <div class="clasOut" style="width: 19vw; height: auto">
+                        <img  style=" width: 17vw; height: 24vw; border-radius: 15px" src="{% static videoInf.FrontImg %}">
+                        <p>{{ videoInf.VideoName }}</p>
+                    </div>
+
+            </a>
+        </center>
+
+    {% endfor %}
+{% endblock %}
+{% block content2 %}
+    {% for viFilter in viFilters %}
+{#        <style>#}
+{#            .clasOut {#}
+{#                padding: 5px 5px 5px 5px;#}
+{#                margin: 5px;#}
+{#                border-radius: 15px;#}
+{#                background-color: #964e4e;#}
+{#                color: white;#}
+{#            }#}
+{##}
+{#        </style>#}
+        <center>
+            <a href="{% url 'videos' viFilter.id %} " style="text-decoration: none; color: white">
+                <div class="clasOut" style="width: 19vw; height: auto;">
+                    <img style="width: 17vw; height: 24vw;border-radius: 15px; " src="{% static viFilter.FrontImg %}">
+                    <p>{{ viFilter.VideoName }}</p>
+                </div>
+            </a>
+        </center>
+
+    {% endfor %}
+{% endblock %}
+{% block content3 %}
+    {% for vi in viRating %}
+        <center>
+            <a href="{% url 'videos' vi.id %} " style="text-decoration: none; color: white">
+
+                    <div class="clasOut" style="width: 19vw; height: auto">
+                        <img  style=" width: 17vw; height: 24vw; border-radius: 15px" src="{% static vi.FrontImg %}">
+                        <p>{{ vi.VideoName }}</p>
+                    </div>
+
+            </a>
+        </center>
+
+    {% endfor %}
+{% endblock %}
